@@ -1,0 +1,56 @@
+{
+  "reviewed_upstream_commit": "875363570df1ae484cf725aba382790444223005",
+  "torch_version": "2.11.0+cu128",
+  "device": "cpu",
+  "checkpoint_loaded": false,
+  "scope": "Helper behavior and tensor-storage probes only; no full-model equivalence or GPU benchmarks",
+  "source_sha256": {
+    "MSA_Pairformer/chunk_layer.py": "28a6f466e3e25827bba31d111462febc282c134e6a89a560c9e92e12f7585190",
+    "MSA_Pairformer/outer_product.py": "ccbfdcd3816a919a1aaa9b3e8bb0e4d4dc9945c8725a2d3a79ee4894844a7c42",
+    "MSA_Pairformer/model.py": "32d7d02fde9fdadbc8f6871f08a5c53a44d8f759bc5ffbc441698e07a1ac8dfe",
+    "MSA_Pairformer_with_MMseqs2.ipynb": "9bf37842f27e49bb6db21001a3bb7ac752d15c17ba100ed9b4242b3a47c38431"
+  },
+  "findings": [
+    {
+      "probe": "chunk helper single-input control",
+      "confirmed": true
+    },
+    {
+      "probe": "chunk helper low_mem references undefined _chunk_slice",
+      "confirmed": true,
+      "exception": "NameError",
+      "message": "name '_chunk_slice' is not defined"
+    },
+    {
+      "probe": "chunk helper multiplies dimensions across input keys",
+      "confirmed": true,
+      "exception": "RuntimeError",
+      "message": "The expanded size of the tensor (2) must match the existing size (0) at non-singleton dimension 0.  Target sizes: [2, 2].  Tensor sizes: [0, 2]"
+    },
+    {
+      "probe": "chunk helper ignores later batch dimensions",
+      "confirmed": true,
+      "exception": "RuntimeError",
+      "message": "shape '[2, 3, 4]' is invalid for input of size 8"
+    },
+    {
+      "probe": "differential OPM chunk omits pair_denom",
+      "confirmed": true,
+      "exception": "TypeError",
+      "message": "main.<locals>.requires_denom() missing 1 required positional argument: 'pair_denom'"
+    },
+    {
+      "probe": "query slice retains full MSA storage",
+      "confirmed": true,
+      "logical_bytes": 48,
+      "view_storage_bytes": 384,
+      "copy_storage_bytes": 48
+    },
+    {
+      "probe": "notebook default collapses identical chains",
+      "confirmed": true,
+      "default_chains": 1,
+      "explicit_preserve_chains": 4
+    }
+  ]
+}

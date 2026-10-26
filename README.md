@@ -1,4 +1,10 @@
 # MSA Pairformer
+
+This fork includes a [screening optimization plan](docs/screening-optimization-plan.md),
+a [code review](docs/screening-code-review.md), and an
+[output-equivalence test plan](docs/screening-validation-plan.md).
+The review branch does not modify model inference code.
+
 <!-- ![Logo](msa_pairformer_logo.png) -->
 <div align="left">
   <img src="msa_pairformer_logo.png" width="300" alt="Neural Network Logo">
